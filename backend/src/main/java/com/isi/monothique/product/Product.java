@@ -11,7 +11,7 @@ import lombok.*;
 @Setter
 @Getter
 @Entity
-@Table(name = "_product")
+
 public class Product {
     @Id
     @GeneratedValue
