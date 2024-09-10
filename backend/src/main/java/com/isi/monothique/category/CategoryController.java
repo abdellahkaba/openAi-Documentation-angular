@@ -5,10 +5,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -22,5 +19,11 @@ public class CategoryController {
             @Valid @RequestBody CategoryRequest request
     ){
         return ResponseEntity.ok(service.saveCategory(request));
+    }
+    @GetMapping("/{categorie-id}")
+    public ResponseEntity<CategoryResponse> findCategoryById(
+            @PathVariable("categorie-id")  Integer categorieId
+    ){
+        return ResponseEntity.ok(service.findCategoryById(categorieId));
     }
 }

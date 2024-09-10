@@ -18,4 +18,12 @@ public class CategoryMapper {
                 .description(request.description())
                 .build();
     }
+
+    public CategoryResponse toCategoryResponse(Category category) {
+        return CategoryResponse.builder()
+                .id(category.getId())
+                .name(category.getName())
+                .description(category.getDescription())
+                .build();
+    }
 }
