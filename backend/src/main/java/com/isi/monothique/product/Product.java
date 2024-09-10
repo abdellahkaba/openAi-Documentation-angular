@@ -17,9 +17,9 @@ public class Product {
     @GeneratedValue
     private Integer id;
     private String name;
-    private String description;
     private double price;
     private Integer quantity;
+    private String description;
     @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;
