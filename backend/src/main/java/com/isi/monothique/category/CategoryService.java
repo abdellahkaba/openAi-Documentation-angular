@@ -74,5 +74,15 @@ public class CategoryService {
             category.setDescription(request.description());
         }
     }
-
+    public Boolean existById(Integer id){
+        return repository.findById(id)
+                .isPresent();
+    }
+    public void deleteCategory(Integer id) {
+        if (!repository.existsById(id)){
+          throw new CategoryNotFoundException(
+                  String.format("Categorie non trouvée", id)
+          );
+        }
+    }
 }

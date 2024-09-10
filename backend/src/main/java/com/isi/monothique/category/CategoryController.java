@@ -47,4 +47,16 @@ public class CategoryController {
         service.updateCategory(request);
         return ResponseEntity.accepted().build();
     }
+    @GetMapping("/exists/{categorie-id}")
+    public ResponseEntity<Boolean> existById(
+            @PathVariable("categorie-id") Integer categorieId
+    ){
+        return ResponseEntity.ok(service.existById(categorieId));
+    }
+    @DeleteMapping("/{categorie-id}")
+    public ResponseEntity<Void> deleteCategory(
+            @PathVariable("categorie-id") Integer categorieId){
+        service.deleteCategory(categorieId) ;
+        return ResponseEntity.accepted().build();
+    }
 }
