@@ -1,6 +1,7 @@
 package com.isi.monothique.category;
 
 
+import com.isi.monothique.common.PageResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -25,5 +26,13 @@ public class CategoryController {
             @PathVariable("categorie-id")  Integer categorieId
     ){
         return ResponseEntity.ok(service.findCategoryById(categorieId));
+    }
+
+    @GetMapping
+    public ResponseEntity<PageResponse<CategoryResponse>> findAllCategory(
+            @RequestParam(name = "page",defaultValue = "0", required = false) int page,
+            @RequestParam(name = "size", defaultValue = "3", required = false) int size
+    ){
+        return ResponseEntity.ok(service.findAllCategory(page,size));
     }
 }

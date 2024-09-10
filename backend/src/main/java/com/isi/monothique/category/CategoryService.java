@@ -1,10 +1,16 @@
 package com.isi.monothique.category;
 
 
+import com.isi.monothique.common.PageResponse;
 import com.isi.monothique.exception.CategoryNotFoundException;
 import com.isi.monothique.exception.NameConflictException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -25,5 +31,22 @@ public class CategoryService {
         return repository.findById(categorieId)
                 .map(mapper::toCategoryResponse)
                 .orElseThrow(() -> new CategoryNotFoundException("Aucune category avec ce ID:: " + categorieId));
+    }
+
+    public PageResponse<CategoryResponse> findAllCategory(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Category> categories = repository.findAllDisplayableCategories(pageable);
+        List<CategoryResponse> categoryResponses = categories
+                .map(mapper::toCategoryResponse)
+                .toList();
+        return new PageResponse<>(
+                categoryResponses,
+                categories.getNumber(),
+                categories.getSize(),
+                categories.getTotalElements(),
+                categories.getTotalPages(),
+                categories.isFirst(),
+                categories.isLast()
+        );
     }
 }
