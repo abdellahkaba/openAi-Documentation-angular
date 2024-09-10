@@ -35,4 +35,16 @@ public class CategoryController {
     ){
         return ResponseEntity.ok(service.findAllCategory(page,size));
     }
+    @PutMapping("/{categorie-id}")
+    public ResponseEntity<Void> updateCategory(
+            @PathVariable("categorie-id") Integer id,
+            @RequestBody @Valid UpdateCategoryRequest request
+    ){
+        request = new UpdateCategoryRequest(
+                id,
+                request.name(),
+                request.description());
+        service.updateCategory(request);
+        return ResponseEntity.accepted().build();
+    }
 }

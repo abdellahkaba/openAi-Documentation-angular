@@ -4,6 +4,7 @@ package com.isi.monothique.category;
 import com.isi.monothique.common.PageResponse;
 import com.isi.monothique.exception.CategoryNotFoundException;
 import com.isi.monothique.exception.NameConflictException;
+import io.micrometer.common.util.StringUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -49,4 +50,29 @@ public class CategoryService {
                 categories.isLast()
         );
     }
+
+    public void updateCategory(UpdateCategoryRequest request) {
+        var category = repository.findById(request.id())
+                .orElseThrow(() -> new CategoryNotFoundException(
+                        String.format("La categorie non trouvé ID:: %s", request.id())
+                ));
+        mergeCategory(category,request);
+        repository.save(category);
+    }
+
+    private void mergeCategory(Category category, UpdateCategoryRequest request) {
+        if (StringUtils.isNotBlank(request.name()) &&
+                !request.name().equals(category.getName()) &&
+                repository.findByName(request.name()).isPresent()){
+            throw new NameConflictException("Cette categorie existe deja !");
+        }
+
+        if(StringUtils.isNotBlank(request.name())){
+            category.setName(request.name());
+        }
+        if (StringUtils.isNotBlank(request.description())){
+            category.setDescription(request.description());
+        }
+    }
+
 }
