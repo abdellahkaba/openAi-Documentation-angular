@@ -2,7 +2,9 @@ package com.isi.monothique.product;
 
 
 import com.isi.monothique.common.PageResponse;
+import com.isi.monothique.exception.CategoryNotFoundException;
 import com.isi.monothique.exception.NameConflictException;
+import com.isi.monothique.exception.ProductNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -42,5 +44,24 @@ public class ProductService {
                 products.isFirst(),
                 products.isLast()
         );
+    }
+
+    public ProductResponse findProductById(Integer productId) {
+        return repository.findById(productId)
+                .map(mapper::toProductResponse)
+                .orElseThrow(() -> new ProductNotFoundException("Aucun produit avec ce ID:: " + productId));
+    }
+
+    public Boolean existById(Integer id){
+        return repository.findById(id)
+                .isPresent();
+    }
+
+    public void deleteProduct(Integer id) {
+        if (!repository.existsById(id)){
+            throw new ProductNotFoundException(
+                    String.format("Produit non trouvée", id)
+            );
+        }
     }
 }

@@ -1,6 +1,7 @@
 package com.isi.monothique.product;
 
 
+import com.isi.monothique.category.CategoryResponse;
 import com.isi.monothique.common.PageResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -29,5 +30,25 @@ public class ProductController {
             @RequestParam(name = "size", defaultValue = "3", required = false) int size
     ){
         return ResponseEntity.ok(service.findAllProduct(page,size));
+    }
+
+    @GetMapping("/{product-id}")
+    public ResponseEntity<ProductResponse> findProductById(
+            @PathVariable("product-id")  Integer productId
+    ){
+        return ResponseEntity.ok(service.findProductById(productId));
+    }
+
+    @GetMapping("/exists/{product-id}")
+    public ResponseEntity<Boolean> existById(
+            @PathVariable("product-id") Integer productId
+    ){
+        return ResponseEntity.ok(service.existById(productId));
+    }
+    @DeleteMapping("/{product-id}")
+    public ResponseEntity<Void> deleteCategory(
+            @PathVariable("product-id") Integer productId){
+        service.deleteProduct(productId); ;
+        return ResponseEntity.accepted().build();
     }
 }
