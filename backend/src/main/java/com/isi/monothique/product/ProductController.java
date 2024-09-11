@@ -2,6 +2,7 @@ package com.isi.monothique.product;
 
 
 import com.isi.monothique.category.CategoryResponse;
+import com.isi.monothique.category.UpdateCategoryRequest;
 import com.isi.monothique.common.PageResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -49,6 +50,23 @@ public class ProductController {
     public ResponseEntity<Void> deleteCategory(
             @PathVariable("product-id") Integer productId){
         service.deleteProduct(productId); ;
+        return ResponseEntity.accepted().build();
+    }
+
+    @PutMapping("/{product-id}")
+    public ResponseEntity<Void> updateProduct(
+            @PathVariable("product-id") Integer id,
+            @RequestBody @Valid UpdateProductRequest request
+    ){
+        request = new UpdateProductRequest(
+                id,
+                request.name(),
+                request.price(),
+                request.quantity(),
+                request.description(),
+                request.categoryId()
+                );
+        service.updateProduct(request);
         return ResponseEntity.accepted().build();
     }
 }

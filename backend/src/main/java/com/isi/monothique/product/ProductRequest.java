@@ -17,8 +17,5 @@ public record ProductRequest(
         String description,
         @NotNull(message = "Donner une categorie correspondante a ce produit")
         Integer categoryId
-
-
-
 ) {
 }
