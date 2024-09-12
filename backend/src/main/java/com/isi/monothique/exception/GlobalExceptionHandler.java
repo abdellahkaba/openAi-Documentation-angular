@@ -1,5 +1,6 @@
 package com.isi.monothique.exception;
 
+import com.isi.monothique.category.CategoryDeletionException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -33,6 +34,11 @@ public class GlobalExceptionHandler {
         return ResponseEntity
                 .status(HttpStatus.CONFLICT)
                 .body(ex.getMessage());
+    }
+
+    @ExceptionHandler(CategoryDeletionException.class)
+    public ResponseEntity<String> handleCategoryDeletionException(CategoryDeletionException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)

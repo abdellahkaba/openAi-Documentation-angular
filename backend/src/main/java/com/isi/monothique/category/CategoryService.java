@@ -79,10 +79,16 @@ public class CategoryService {
                 .isPresent();
     }
     public void deleteCategory(Integer id) {
-        if (!repository.existsById(id)){
-          throw new CategoryNotFoundException(
-                  String.format("Categorie non trouvée", id)
-          );
+        // Vérification si la catégorie existe
+        Category category = repository.findById(id)
+                .orElseThrow(() -> new CategoryNotFoundException("Cette catégorie n'existe pas"));
+
+        // Vérification si des produits sont associés à cette catégorie
+        if (!category.getProducts().isEmpty()) {
+            throw new CategoryDeletionException("Impossible de supprimer la catégorie car elle est associée à des produits.");
         }
+
+        // Suppression de la catégorie
+        repository.delete(category);
     }
 }
